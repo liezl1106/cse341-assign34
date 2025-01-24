@@ -1,7 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongodb = require('./db/connect');
-const contactsRoutes = require('./routes/contacts');
+const userRoutes = require('./routes/userRoutes');
+const productRoutes = require('./routes/productRoutes');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
 const app = express();
@@ -16,7 +17,8 @@ app
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     next();
   })
-  .use('/contacts', contactsRoutes)
+  .use('/users', userRoutes)
+  .use('/products', productRoutes)
   .use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
   .get('/', (req, res) => {
     res.send('Welcome to the Contacts API!');

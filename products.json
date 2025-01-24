@@ -1,0 +1,50 @@
+[
+    {
+        "name": "swiss knife",
+        "description": "swiss knife for protection",
+        "price": "25.00",
+        "stock": "50"
+    },
+    {
+        "name": "flashlight",
+        "description": "use for everyday life",
+        "price": "80.00",
+        "stock": "100"
+    },
+    {
+        "name": "record book",
+        "description": "500 pages of record book",
+        "price": "125.00",
+        "stock": "50"
+    },
+    {
+        "name": "backpack bag",
+        "description": "nike backpack",
+        "price": "975.00",
+        "stock": "100"
+    },
+    {
+        "name": "rings",
+        "description": "ctr rings for kids",
+        "price": "25.00",
+        "stock": "500"
+    },
+    {
+        "name": "paper bag",
+        "description": "use for shopping",
+        "price": "30.00",
+        "stock": "50"
+    },
+    {
+        "name": "hat",
+        "description": "protection against the sun",
+        "price": "100.00",
+        "stock": "50"
+    },
+    {
+        "name": "sun glasses",
+        "description": "everyday use for sun",
+        "price": "75.00",
+        "stock": "50"
+    }
+]

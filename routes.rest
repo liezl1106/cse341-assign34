@@ -5,37 +5,3 @@ GET http://localhost:3000/users
 ###Get all users
 GET http://localhost:3000/products
 
-
-
-
-######
-###Get contacts by ID
-GET http://localhost:3000/contacts/6786b0d53aa79e85e5f9a551
-
-###CREATE contacts
-POST http://localhost:3000/contacts
-Content-Type: application/json
-
-{
-    "firstName": "Larnel",
-    "lastName": "Boron",
-    "email": "larnel0418@gmail.com",
-    "favoriteColor": "green",
-    "birthday": "04/17/1972"
-}
-
-###PUT contacts
-PUT http://localhost:3000/contacts/678a83c7ae9450a78d7edaa0
-Content-Type: application/json
-
-{
-    "firstName": "Louie",
-    "lastName": "Amante",
-    "email": "louiejee@gmail.com",
-    "favoriteColor": "blue",
-    "birthday": "1996-04-27"
-}
-
-###DELETE contacts
-DELETE http://localhost:3000/contacts/678ca8d7679a652d63b92123
-Content-Type: application/json
