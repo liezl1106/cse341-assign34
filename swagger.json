@@ -1,0 +1,33 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "Contacts API",
+      "description": "API documentation for the Contacts API"
+    },
+    "host": "localhost:3000",
+    "basePath": "/",
+    "schemes": ["http"],
+    "paths": {
+      "/users": {
+        "get": {
+          "summary": "Get all users",
+          "responses": {
+            "200": {
+              "description": "A list of users"
+            }
+          }
+        }
+      },
+      "/products": {
+        "get": {
+          "summary": "Get all products",
+          "responses": {
+            "200": {
+              "description": "A list of products"
+            }
+          }
+        }
+      }
+    }
+  }  
