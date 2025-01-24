@@ -1,0 +1,23 @@
+[
+    {
+        "firstName": "Liezl",
+        "lastName": "Lizardo",
+        "email": "liezl1106@gmail.com",
+        "favoriteColor": "green",
+        "birthday": "11/06/1976"
+    },
+    {
+        "firstName": "Lorena",
+        "lastName": "Lizardo",
+        "email": "lorena77@gmail.com",
+        "favoriteColor": "yellow",
+        "birthday": "11/24/1977"
+    },
+    {
+        "firstName": "Larnel",
+        "lastName": "Boron",
+        "email": "larnel71@gmail.com",
+        "favoriteColor": "blue",
+        "birthday": "04/17/1971"
+    }
+]
