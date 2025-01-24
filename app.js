@@ -1,34 +1,21 @@
+require('dotenv').config();
 const express = require('express');
-const bodyParser = require('body-parser');
-const mongodb = require('./db/connect');
-const contactsRoutes = require('./routes/contacts');
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger.json');
+const connectDB = require('./db/connect');
+const userRoutes = require('./routes/userRoutes');
+const productRoutes = require('./routes/productRoutes');
+
 const app = express();
 
-const port = process.env.PORT || 3000;
+// Middleware
+app.use(express.json());
 
-app
-  .use(bodyParser.json())
-  .use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    next();
-  })
-  .use('/contacts', contactsRoutes)
-  .use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
-  .get('/', (req, res) => {
-    res.send('Welcome to the Contacts API!');
-  });
+// Connect to MongoDB
+connectDB();
 
-mongodb.initDb((err) => {
-  if (err) {
-    console.log(err);
-  } else {
-    app.listen(port, () => {
-      console.log(`Connected to DB and listening on http://localhost:${port}`);
-      console.log(`Swagger docs available at http://localhost:${port}/api-docs`);
-    });
-  }
-});
+// Routes
+app.use('/api/users', userRoutes);
+app.use('/api/products', productRoutes);
+
+// Start the server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

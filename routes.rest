@@ -1,7 +1,14 @@
 //LOCALHOST
-###Get all contacts
-GET http://localhost:3000/contacts
+###Get all users
+GET http://localhost:3000/users
 
+###Get all users
+GET http://localhost:3000/products
+
+
+
+
+######
 ###Get contacts by ID
 GET http://localhost:3000/contacts/6786b0d53aa79e85e5f9a551
 
