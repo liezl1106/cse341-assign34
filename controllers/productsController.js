@@ -69,7 +69,7 @@ const updateProducts = async (req, res, next) => {
 const deleteProducts = async (req, res, next) => {
 //#swagger.tags=['Users']
   const productsId = new ObjectId(req.params.id);
-  const response = await mongodb.getDb().collection('users').deleteOne({ _id: productsId });
+  const response = await mongodb.getDb().collection('products').deleteOne({ _id: productsId });
   if (response.deletedCount > 0) {
     res.status(200).json(response);
   } else {

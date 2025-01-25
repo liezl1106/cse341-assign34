@@ -60,5 +60,5 @@ Content-Type: application/json
 }
 
 ###DELETE products
-DELETE http://localhost:3000/products/67939b3e65d2eb1dbf4df5a5
+DELETE http://localhost:3000/products/67945c73ff556569d8b640f2
 Content-Type: application/json
