@@ -5,9 +5,9 @@
     "title": "API Documentation",
     "description": "API documentation for users and products"
   },
-  "host": "localhost:3000",
+  "host": "https://cse341-assign34.onrender.com",
   "basePath": "/",
-  "schemes": ["http"],
+  "schemes": ["https"],
   "paths": {
     "/users": {
       "get": {
