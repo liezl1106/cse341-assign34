@@ -4,7 +4,7 @@ const productsController = require('../controllers/productsController'); // Ensu
 const { validateUser, validateProduct } = require('../helpers/validate');
 const validate = require('../middleware/middleware');
 
-// Define routes
+// Routes for products operations
 router.get('/', productsController.getAll); // Make sure this function exists in productsController
 router.get('/:id', validateUser, validate, productsController.getSingle); 
 router.post('/', validateProduct, validate, productsController.createProducts);
