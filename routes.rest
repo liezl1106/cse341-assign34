@@ -35,30 +35,30 @@ Content-Type: application/json
 GET http://localhost:3000/products
 
 ###Get products by ID
-GET http://localhost:3000/products/6786b0d53aa79e85e5f9a551
+GET http://localhost:3000/products/67939b3e65d2eb1dbf4df59f
 
 ###CREATE products
 POST http://localhost:3000/products
 Content-Type: application/json
 
 {
-        "name": "flashlight",
+        "name": "umbrella",
         "description": "use for everyday life",
-        "price": "80.00",
-        "stock": "100"
+        "price": "65.00",
+        "stock": "120"
 }
 
 ###PUT products
-PUT http://localhost:3000/products/678a83c7ae9450a78d7edaa0
+PUT http://localhost:3000/products/67939b3e65d2eb1dbf4df59e
 Content-Type: application/json
 
 {
-        "name": "flashlight",
-        "description": "use for everyday life",
-        "price": "80.00",
-        "stock": "100"
+    "name": "swiss knife",
+    "description": "swiss knife for protection",
+    "price": "30.00",
+    "stock": "75"
 }
 
 ###DELETE products
-DELETE http://localhost:3000/products/678ca8d7679a652d63b92123
+DELETE http://localhost:3000/products/67939b3e65d2eb1dbf4df5a5
 Content-Type: application/json

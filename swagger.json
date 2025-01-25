@@ -29,10 +29,11 @@
             "schema": {
               "type": "object",
               "properties": {
+                "userName": { "type": "string" },
                 "email": { "type": "string" },
                 "password": { "type": "string" }
               },
-              "required": ["email", "password"]
+              "required": ["userName", "email", "password"]
             }
           }
         ],
@@ -77,6 +78,7 @@
             "schema": {
               "type": "object",
               "properties": {
+                "userName": { "type": "string" },
                 "email": { "type": "string" },
                 "password": { "type": "string" }
               }
@@ -127,10 +129,11 @@
               "type": "object",
               "properties": {
                 "name": { "type": "string" },
+                "description": { "type": "string" },
                 "price": { "type": "number" },
                 "stock": { "type": "integer" }
               },
-              "required": ["name", "price", "stock"]
+              "required": ["name", "description", "price", "stock"]
             }
           }
         ],
@@ -176,6 +179,7 @@
               "type": "object",
               "properties": {
                 "name": { "type": "string" },
+                "description": { "type": "string" },
                 "price": { "type": "number" },
                 "stock": { "type": "integer" }
               }
