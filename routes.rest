@@ -2,6 +2,63 @@
 ###Get all users
 GET http://localhost:3000/users
 
-###Get all users
+###Get contacts by ID
+GET http://localhost:3000/users/6786b0d53aa79e85e5f9a551
+
+###CREATE users
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+    "userName": "Llizardo76",
+    "email": "liezl1106@gmail.com",
+    "password": "asakapa11"
+}
+
+###PUT contacts
+PUT http://localhost:3000/users/678a83c7ae9450a78d7edaa0
+Content-Type: application/json
+
+{
+    "userName": "Llizardo76",
+    "email": "liezl1106@gmail.com",
+    "password": "asakapa11"
+}
+
+###DELETE contacts
+DELETE http://localhost:3000/users/678ca8d7679a652d63b92123
+Content-Type: application/json
+
+###PRODUCTS
+
+###Get all products
 GET http://localhost:3000/products
 
+###Get products by ID
+GET http://localhost:3000/products/6786b0d53aa79e85e5f9a551
+
+###CREATE products
+POST http://localhost:3000/products
+Content-Type: application/json
+
+{
+        "name": "flashlight",
+        "description": "use for everyday life",
+        "price": "80.00",
+        "stock": "100"
+}
+
+###PUT products
+PUT http://localhost:3000/products/678a83c7ae9450a78d7edaa0
+Content-Type: application/json
+
+{
+        "name": "flashlight",
+        "description": "use for everyday life",
+        "price": "80.00",
+        "stock": "100"
+}
+
+###DELETE products
+DELETE http://localhost:3000/products/678ca8d7679a652d63b92123
+Content-Type: application/json
