@@ -35,9 +35,8 @@ app.use(bodyParser.json())
 passport.use(new GitHubStrategy({
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: process.env.CALLBACK_URL
+    callbackURL: "https://cse341-assign34.onrender.com/github/callback" // Use Render URL
 }, (accessToken, refreshToken, profile, done) => {
-    // Replace this with database logic (e.g., findOrCreate user)
     return done(null, profile);
 }));
 
@@ -49,10 +48,11 @@ passport.deserializeUser((user, done) => {
 });
 
 // Routes
+// Routes
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/", require("./routes/index.js"));
 app.use('/users', userRoutes);
 app.use('/products', productRoutes);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Root Route
 app.get('/', (req, res) => { 
