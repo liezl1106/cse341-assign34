@@ -7,7 +7,7 @@
   },
   "host": "cse341-assign34.onrender.com",
   "basePath": "/",
-  "schemes": ["https"],
+  "schemes": ["https", "https"],
   "paths": {
     "/users": {
       "get": {

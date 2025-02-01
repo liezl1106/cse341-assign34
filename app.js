@@ -5,32 +5,76 @@ const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
-const app = express();
+const passport = require('passport');
+const session = require('express-session');
+const GitHubStrategy = require('passport-github').Strategy;
+const cors = require('cors');
 
+const app = express();
 const port = process.env.PORT || 3000;
 
-app
-  .use(bodyParser.json())
-  .use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    next();
-  })
-  .use('/users', userRoutes)
-  .use('/products', productRoutes)
-  .use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
-  .get('/', (req, res) => {
-    res.send('Welcome to the Contacts API!');
-  });
+// Middleware
+app.use(bodyParser.json())
+   .use(session({
+       secret: "secret",
+       resave: false,
+       saveUninitialized: true,
+   }))
+   .use(passport.initialize())
+   .use(passport.session())
+   .use(cors({ methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH']}))
+   .use(cors({ origin: '*' }))
+   .use((req, res, next) => {
+       res.setHeader('Access-Control-Allow-Origin', '*');
+       res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+       res.setHeader('Access-Control-Allow-Headers', 'Origin, x-Requested-With, Content-Type, Accept, z-Key, Authorization');
+       next();
+   });
 
+// GitHub Authentication Strategy
+passport.use(new GitHubStrategy({
+    clientID: process.env.GITHUB_CLIENT_ID,
+    clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    callbackURL: process.env.CALLBACK_URL
+}, (accessToken, refreshToken, profile, done) => {
+    // Replace this with database logic (e.g., findOrCreate user)
+    return done(null, profile);
+}));
+
+passport.serializeUser((user, done) => {
+    done(null, user);
+});
+passport.deserializeUser((user, done) => {
+    done(null, user);
+});
+
+// Routes
+app.use("/", require("./routes/index.js"));
+app.use('/users', userRoutes);
+app.use('/products', productRoutes);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+// Root Route
+app.get('/', (req, res) => { 
+    res.send(req.session.user !== undefined ? `Logged in as ${req.session.user.displayName}` : "Logged Out");
+});
+
+// GitHub OAuth Callback
+app.get('/github/callback', passport.authenticate('github', { 
+    failureRedirect: '/api-docs', session: false
+}), (req, res) => {
+    req.session.user = req.user;
+    res.redirect('/');
+});
+
+// Connect to Database and Start Server
 mongodb.initDb((err) => {
-  if (err) {
-    console.log(err);
-  } else {
-    app.listen(port, () => {
-      console.log(`Connected to DB and listening on http://localhost:${port}`);
-      console.log(`Swagger docs available at http://localhost:${port}/api-docs`);
-    });
-  }
+    if (err) {
+        console.log(err);
+    } else {
+        app.listen(port, () => {
+            console.log(`Connected to DB and listening on http://localhost:${port}`);
+            console.log(`Swagger docs available at http://localhost:${port}/api-docs`);
+        });
+    }
 });
