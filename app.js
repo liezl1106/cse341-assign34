@@ -1,3 +1,5 @@
+require('dotenv').config(); // Load environment variables for local development
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongodb = require('./db/connect');
@@ -9,41 +11,58 @@ const passport = require('passport');
 const session = require('express-session');
 const GitHubStrategy = require('passport-github').Strategy;
 const cors = require('cors');
+const MongoStore = require('connect-mongo');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Debugging: Ensure environment variables are loaded
+console.log("✅ Checking Environment Variables:");
+console.log("MONGODB_URI:", process.env.MONGODB_URI ? "LOADED" : "MISSING");
+console.log("GITHUB_CLIENT_ID:", process.env.GITHUB_CLIENT_ID || "MISSING");
+console.log("GITHUB_CLIENT_SECRET:", process.env.GITHUB_CLIENT_SECRET ? "LOADED" : "MISSING");
+console.log("CALLBACK_URL:", process.env.CALLBACK_URL || "MISSING");
+console.log("SESSION_SECRET:", process.env.SESSION_SECRET || "MISSING");
+
 // Middleware
-app.use(bodyParser.json())
-   .use(session({
-       secret: process.env.SESSION_SECRET || "supersecret",
-       resave: false,
-       saveUninitialized: false,
-   }))
-   .use(passport.initialize())
-   .use(passport.session())
-   .use(cors({ methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH'] }))
-   .use(cors({ origin: '*' }))
-   .use((req, res, next) => {
-       res.setHeader('Access-Control-Allow-Origin', '*');
-       res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-       res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-       next();
-   });
+app.use(bodyParser.json());
+
+// Use `connect-mongo` for secure session storage
+app.use(session({
+    secret: process.env.SESSION_SECRET || "supersecret",
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI })
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Unified CORS middleware
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'],
+    allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization']
+}));
 
 // GitHub Authentication Strategy
+if (!process.env.GITHUB_CLIENT_ID || !process.env.GITHUB_CLIENT_SECRET) {
+    console.error("❌ ERROR: Missing GitHub OAuth credentials. Set them in .env or Render.");
+    process.exit(1); // Stop the app if credentials are missing
+}
+
 passport.use(new GitHubStrategy({
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
     callbackURL: process.env.CALLBACK_URL
 }, (accessToken, refreshToken, profile, done) => {
-    // Replace this with database logic (e.g., findOrCreate user)
     return done(null, profile);
 }));
 
 passport.serializeUser((user, done) => {
     done(null, user);
 });
+
 passport.deserializeUser((user, done) => {
     done(null, user);
 });
@@ -71,11 +90,12 @@ app.get('/github/callback', passport.authenticate('github', {
 // Connect to Database and Start Server
 mongodb.initDb((err) => {
     if (err) {
-        console.log(err);
+        console.error("❌ Database Connection Failed:", err);
+        process.exit(1);
     } else {
         app.listen(port, () => {
-            console.log(`Connected to DB and listening on http://localhost:${port}`);
-            console.log(`Swagger docs available at http://localhost:${port}/api-docs`);
+            console.log(`✅ Server running at http://localhost:${port}`);
+            console.log(`📄 Swagger docs: http://localhost:${port}/api-docs`);
         });
     }
 });
