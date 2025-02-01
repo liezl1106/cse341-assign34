@@ -1,4 +1,4 @@
-require('dotenv').config(); // Load environment variables for local development
+require('dotenv').config(); // Load environment variables
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -48,7 +48,7 @@ app.use(cors({
 // GitHub Authentication Strategy
 if (!process.env.GITHUB_CLIENT_ID || !process.env.GITHUB_CLIENT_SECRET) {
     console.error("❌ ERROR: Missing GitHub OAuth credentials. Set them in .env or Render.");
-    process.exit(1); // Stop the app if credentials are missing
+    process.exit(1);
 }
 
 passport.use(new GitHubStrategy({
@@ -79,9 +79,12 @@ app.get('/', (req, res) => {
     res.send(req.session.user ? `Logged in as ${req.session.user.displayName}` : "Logged Out");
 });
 
-// GitHub OAuth Callback
+// Login route: Redirects to GitHub OAuth
+app.get('/login', passport.authenticate('github', { scope: ['user:email'] }));
+
+// GitHub OAuth Callback (Fixed: No Duplicate)
 app.get('/github/callback', passport.authenticate('github', { 
-    failureRedirect: '/api-docs', session: true
+    failureRedirect: '/login', session: true
 }), (req, res) => {
     req.session.user = req.user;
     res.redirect('/');
