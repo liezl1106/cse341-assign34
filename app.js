@@ -1,7 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongodb = require('./db/connect');
-const User = require('./models/User'); // Import user model
 const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
 const swaggerUi = require('swagger-ui-express');
@@ -32,43 +31,21 @@ app.use(bodyParser.json())
        next();
    });
 
-// GitHub OAuth Strategy
+// GitHub Authentication Strategy
 passport.use(new GitHubStrategy({
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: "https://cse341-assign34.onrender.com/github/callback"
-}, async (accessToken, refreshToken, profile, done) => {
-    try {
-        // Check if user exists in database
-        let user = await User.findOne({ githubId: profile.id });
-
-        if (!user) {
-            // Create new user
-            user = new User({
-                githubId: profile.id,
-                displayName: profile.displayName,
-                username: profile.username,
-                profileUrl: profile.profileUrl
-            });
-            await user.save();
-        }
-        return done(null, user);
-    } catch (err) {
-        return done(err, null);
-    }
+    callbackURL: process.env.CALLBACK_URL
+}, (accessToken, refreshToken, profile, done) => {
+    // Replace this with database logic (e.g., findOrCreate user)
+    return done(null, profile);
 }));
 
 passport.serializeUser((user, done) => {
-    done(null, user.id);
+    done(null, user);
 });
-
-passport.deserializeUser(async (id, done) => {
-    try {
-        const user = await User.findById(id);
-        done(null, user);
-    } catch (err) {
-        done(err, null);
-    }
+passport.deserializeUser((user, done) => {
+    done(null, user);
 });
 
 // Routes

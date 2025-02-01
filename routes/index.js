@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const passport = require('passport'); // Import passport
+const passport = require('passport'); 
 
 // Swagger route
 router.use('/api-docs', require('./swagger'));
