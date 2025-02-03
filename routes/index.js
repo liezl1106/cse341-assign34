@@ -5,7 +5,12 @@ const passport = require('passport');
 router.use('/api-docs', require('./swagger'));
 
 // GitHub authentication route
-router.get('/login', passport.authenticate('github'), (req, res) => {});
+router.get('/login', passport.authenticate('github', { scope: ['user:email'] }));
+
+router.get('/github/callback', passport.authenticate('github', { 
+    failureRedirect: '/', 
+    successRedirect: '/' 
+}));
 
 // Logout route
 router.get('/logout', function(req, res, next) {

@@ -9,27 +9,39 @@ const passport = require('passport');
 const session = require('express-session');
 const GitHubStrategy = require('passport-github').Strategy;
 const cors = require('cors');
+const MongoStore = require('connect-mongo');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 // Middleware
-app.use(bodyParser.json())
-   .use(session({
-       secret: "secret",
-       resave: false,
-       saveUninitialized: true,
-   }))
-   .use(passport.initialize())
-   .use(passport.session())
-   .use(cors({ methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH']}))
-   .use(cors({ origin: '*' }))
-   .use((req, res, next) => {
-       res.setHeader('Access-Control-Allow-Origin', '*');
-       res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-       res.setHeader('Access-Control-Allow-Headers', 'Origin, x-Requested-With, Content-Type, Accept, z-Key, Authorization');
-       next();
-   });
+app.use(bodyParser.json());
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH'],
+    allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'z-Key', 'Authorization']
+}));
+
+app.use(session({
+    secret: "secret",
+    resave: false,
+    saveUninitialized: true,
+    store: MongoStore.create({
+        mongoUrl: 'mongodb+srv://lzel76:lezLaway1176@cluster0.56ovd.mongodb.net/project3', 
+        collectionName: 'sessions'
+    }),
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Debugging Session Data (Only when user is authenticated)
+app.use((req, res, next) => {
+    if (req.session.passport) {
+        console.log("Authenticated User Session:", req.session.passport.user);
+    }
+    next();
+});
 
 // GitHub Authentication Strategy
 passport.use(new GitHubStrategy({
@@ -37,7 +49,6 @@ passport.use(new GitHubStrategy({
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
     callbackURL: process.env.CALLBACK_URL
 }, (accessToken, refreshToken, profile, done) => {
-    // Replace this with database logic (e.g., findOrCreate user)
     return done(null, profile);
 }));
 
@@ -54,18 +65,23 @@ app.use("/", require("./routes/index.js"));
 app.use('/users', userRoutes);
 app.use('/products', productRoutes);
 
-
 // Root Route
 app.get('/', (req, res) => { 
-    res.send(req.session.user !== undefined ? `Logged in as ${req.session.user.displayName}` : "Logged Out");
+    res.send(req.session.user ? `Logged in as ${req.session.user.displayName}` : "Logged Out");
 });
 
-// GitHub OAuth Callback
+// GitHub OAuth Callback Route
 app.get('/github/callback', passport.authenticate('github', { 
-    failureRedirect: '/api-docs', session: false
+    failureRedirect: '/', 
+    session: true 
 }), (req, res) => {
     req.session.user = req.user;
     res.redirect('/');
+});
+
+// Catch-all for undefined routes
+app.use('*', (req, res) => {
+    res.status(404).json({ error: 'Route not found' });
 });
 
 // Connect to Database and Start Server
