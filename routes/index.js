@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const passport = require('passport'); 
+const passport = require('passport');
 
 // Swagger route
 router.use('/api-docs', require('./swagger'));
@@ -16,13 +16,23 @@ router.get('/github/callback', passport.authenticate('github', {
 router.get('/logout', function(req, res, next) {
     req.logout(function(err) {
         if (err) { return next(err); }
-        res.redirect('/');
+        req.session.destroy(() => {
+            res.redirect('/');
+        });
     });
 });
 
-// Base route
+// Base route (Welcome Message + Login Status)
 router.get('/', (req, res) => {
-    res.json('Welcome to the API!');
+    const message = "Welcome to the API!";
+    if (req.isAuthenticated()) {
+        res.json({ 
+            message, 
+            loginStatus: `Logged in as ${req.user.username}` 
+        });
+    } else {
+        res.json({ message, loginStatus: "Logged Out" });
+    }
 });
 
 // Users route

@@ -35,13 +35,13 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Debugging Session Data (Only when user is authenticated)
-app.use((req, res, next) => {
-    if (req.session.passport) {
-        console.log("Authenticated User Session:", req.session.passport.user);
-    }
-    next();
-});
+// // Debugging Session Data (Only when user is authenticated)
+// app.use((req, res, next) => {
+//     if (req.session.passport) {
+//         console.log("Authenticated User Session:", req.session.passport.user);
+//     }
+//     next();
+// });
 
 // GitHub Authentication Strategy
 passport.use(new GitHubStrategy({
