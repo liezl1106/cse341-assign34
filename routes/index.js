@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const passport = require('passport');
-const { isAuthenticated } = require('./middleware/authenticate');
+const { isAuthenticated } = require('../middleware/authenticate');
 
 // Swagger route
 router.use('/api-docs', require('./swagger'));
