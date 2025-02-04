@@ -91,8 +91,8 @@ mongodb.initDb((err) => {
         console.log(err);
     } else {
         app.listen(port, () => {
-            console.log(`Connected to DB and listening on http://localhost:${port}`);
-            console.log(`Swagger docs available at http://localhost:${port}/api-docs`);
+            console.log(`Connected to DB and listening on https://cse341-assign34.onrender.com/`); 
+            console.log(`Swagger docs available at https://cse341-assign34.onrender.com/api-docs/`);
         });
     }
 });
