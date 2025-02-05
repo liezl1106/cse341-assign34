@@ -3,48 +3,64 @@
         "name": "swiss knife",
         "description": "swiss knife for protection",
         "price": "25.00",
-        "stock": "50"
+        "stock": "50",
+        "active": "yes",
+        "manufacturer": "swiss"
     },
     {
         "name": "flashlight",
         "description": "use for everyday life",
         "price": "80.00",
-        "stock": "100"
+        "stock": "100",
+        "active": "yes",
+        "manufacturer": "no name"
     },
     {
         "name": "record book",
         "description": "500 pages of record book",
         "price": "125.00",
-        "stock": "50"
+        "stock": "50",
+        "active": "yes",
+        "manufacturer": "no name"
     },
     {
         "name": "backpack bag",
         "description": "nike backpack",
         "price": "975.00",
-        "stock": "100"
+        "stock": "100",
+        "active": "yes",
+        "manufacturer": "no name"
     },
     {
         "name": "rings",
         "description": "ctr rings for kids",
         "price": "25.00",
-        "stock": "500"
+        "stock": "500",
+        "active": "yes",
+        "manufacturer": "no name"
     },
     {
         "name": "paper bag",
         "description": "use for shopping",
         "price": "30.00",
-        "stock": "50"
+        "stock": "50",
+        "active": "yes",
+        "manufacturer": "no name"
     },
     {
         "name": "hat",
         "description": "protection against the sun",
         "price": "100.00",
-        "stock": "50"
+        "stock": "50",
+        "active": "yes",
+        "manufacturer": "no name"
     },
     {
         "name": "sun glasses",
         "description": "everyday use for sun",
         "price": "75.00",
-        "stock": "50"
+        "stock": "50",
+        "active": "yes",
+        "manufacturer": "no name"
     }
 ]

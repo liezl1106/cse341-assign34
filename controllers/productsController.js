@@ -33,6 +33,8 @@ const createProducts = async (req, res, next) => {
       description: req.body.description,
       price: req.body.price,
       stock: req.body.stock,
+      active: req.body.active,
+      manufacturer: req.body.manufacturer,
     };
     const response = await mongodb.getDb().collection('products').insertOne(product);
     if (response.acknowledged) {
@@ -54,6 +56,8 @@ const updateProducts = async (req, res, next) => {
       description: req.body.description,
       price: req.body.price,
       stock: req.body.stock,
+      active: req.body.active,
+      manufacturer: req.body.manufacturer,
     };
     const response = await mongodb.getDb().collection('products').replaceOne({ _id: productId }, product);
     if (response.modifiedCount > 0) {
